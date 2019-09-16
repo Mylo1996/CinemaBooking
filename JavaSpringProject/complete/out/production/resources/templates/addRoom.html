@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Termek módosítása</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<header th:insert="adminHeader.html :: header"> </header>
+    <h2>Új terem hozzáadása</h2>
+    <form th:action="@{/addRoom}" th:object="${newRoom}" method="POST">
+        <label>Sor:<span class="required">*</span></label>
+        <input type="number" required th:field="*{rowCount}" />
+        <br>
+        <label>Oszlop:<span class="required">*</span></label>
+        <input type="number" required th:field="*{colCount}" />
+        <br>
+		<label>Sorszám:<span class="required">*</span></label>
+		<input type="number" required th:field="*{roomNumber}" />
+		<br>
+        <input type="submit" value="Hozzáadás" />
+    </form>
+
+	<h2> Termek:</h2> 	
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<td>Sor</td>
+				<td>Oszlop</td>
+				<td>Sorszám</td>
+				<td>Szerkesztés</td>
+				<td>Törlés</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="room : ${rooms}">
+				<td th:text="${room.rowCount}"></td>
+				<td th:text="${room.colCount}"></td>
+				<td th:text="${room.roomNumber}"></td>
+				<td><a href="#" th:href="@{/editRoom/} + ${room.id}">szerkeszt</a></td>
+				<td><a href="#" th:href="@{/deleteRoom/} + ${room.id}">Töröl</a></td> 
+				<!-- <td><input type="button" value="X" th:onclick="'javascript:deleteRoom(\'' + ${room.id} + '\');'" /></td> -->
+			</tr>
+		</tbody>	
+	</table>	
+</body>
+</html>

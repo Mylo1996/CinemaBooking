@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Statisztikák</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+</head>
+<body>
+	<header th:insert="adminHeader.html :: header"> </header>
+	<div id="poster">
+		<img th:each="movie: ${movies}" th:attr="src=${movie.posterLink}" />
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<h1>Statisztikák: </h1>
+
+
+	<h2>Filmek látogatottsága</h2>
+	<canvas id="MovieChart"></canvas>
+
+	<script th:inline="javascript">
+
+		var ctx = document.getElementById('MovieChart').getContext('2d');
+
+		var titles = /*[[${titleList}]]*/ [];
+		var prices = /*[[${priceList}]]*/ [];
+
+
+		var chart = new Chart(ctx, {
+			// The type of chart we want to create
+			type: 'bar',
+
+			// The data for our dataset
+			data: {
+				labels: titles,
+				datasets: [{
+					label: '',
+					backgroundColor: 'rgb(192, 57, 43)',
+					data: prices
+				}]
+			},
+
+			// Configuration options go here
+			options: {
+				legend: {
+					display: false
+				},
+				tooltips: {
+					callbacks: {
+					   label: function(tooltipItem) {
+							  return tooltipItem.yLabel;
+					   }
+					}
+				}
+			}
+		});
+	</script>
+
+
+	<h2>Termek</h2>
+	<canvas id="RoomChart"></canvas>
+
+	<script  th:inline="javascript">
+
+		var ctx = document.getElementById('RoomChart').getContext('2d');
+
+		var listA = /*[[${listA}]]*/ [];
+		var listB = /*[[${listB}]]*/ [];
+
+		var chart = new Chart(ctx, {
+			// The type of chart we want to create
+			type: 'bar',
+
+			// The data for our dataset
+			data: {
+				labels: listB,
+				datasets: [{
+					label: '',
+					backgroundColor: 'rgb(192, 57, 43)',
+					data: listA
+				}]
+			},
+
+			// Configuration options go here
+			options: {
+				legend: {
+					display: false
+				},
+				tooltips: {
+					callbacks: {
+					   label: function(tooltipItem) {
+							  return tooltipItem.yLabel;
+					   }
+					}
+				}
+
+			}
+		});
+	</script>
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Kijelentkezés"/>
+	</form>
+
+
+</body>
+</html>

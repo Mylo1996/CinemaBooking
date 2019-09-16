@@ -1,0 +1,206 @@
+a {
+  color: #A2B9B2;
+  text-decoration: none;
+}
+
+thead {
+	font-weight: bold;
+}
+
+/*Header image*/
+.headerimg{
+    width: 100%;
+    height: 300px;
+    display: block;
+}
+
+/*Navigation Bar*/
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    margin: 0px;
+    border-width: 3px 0px 0px 0px;
+    border-color: #333333;
+    border-style: ridge;
+
+    -webkit-box-shadow: 0px -1px 10px 4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px -1px 10px 4px rgba(0,0,0,0.75);
+    box-shadow: 0px -1px 10px 4px rgba(0,0,0,0.75);
+}
+
+.topnav a {
+    float: right;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 10px 30px;
+    text-decoration: none;
+    font-family: arial;
+    font-weight: bold;
+    text-transform: capital;
+    font-size: 1.2em;
+}
+
+.topnav a:hover {
+    background-color: #E74C3C;
+    color: white;
+}
+
+.active {
+    background-color: #C0392B;
+    color: white;
+}
+
+.topnav .icon {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .topnav a:not(:first-child) {display: none;}
+    .topnav a.icon {
+        float: right;
+        display: block;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .topnav.responsive {position: relative;}
+    .topnav.responsive .icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .topnav.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+}
+
+/*----------------------------------*/
+
+
+/*Homepage Images*/
+#poster {
+    text-align: center;
+    width: auto;
+    margin: 5px;
+}
+
+#poster img {
+    width: 220px;
+    height: 326px;
+    transition: all 0.23s ease-out;
+    -webkit-transition: all 0.23s ease-out; /*Webkit: animation duration*/
+    -moz-transition: all 0.23s ease-out; /*Mozilla: animation duration*/
+    -o-transition: all 0.23s ease-out; /*Opera: animation duration*/
+    opacity: 0.8; /*initial opacity of the image*/
+    z-index: 1; /*place non-hover images behind the hover image*/
+    margin: 0; /*remove default margin for images*/
+   position: relative; /*solve the problem with z-index in Chrome*/
+}
+
+#poster img:hover {
+    transform: scale(1.1, 1.1);    /*Explorer: scaling*/
+    -webkit-transform: scale(1.1, 1.1); /*Webkit: increase size to 1.1x*/
+    -moz-transform: scale(1.1, 1.1); /*Mozilla: scaling*/
+    -o-transform: scale(1.1, 1.1); /*Opera: scaling*/
+    box-shadow: 0px 0px 10px black; /*CSS3 shadows: 25px fuzzy shadow around the entire image*/
+    -webkit-box-shadow: 0px 0px 10px black; /*Webkit: shadows*/
+    -moz-box-shadow: 0px 0px 10px black; /*Mozilla: shadows*/
+    opacity: 1; /*default opacity*/
+    z-index: 2; /*place hover image in front the non-hover images*/
+}
+/*----------------------------------*/
+
+/*Forms*/
+.required{
+	color: red;
+}
+
+/*Overlay*/
+.overlay {
+  overflow: auto;
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.9); /* Black background with opacity */
+  z-index: 3; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+
+#overlayDescription{
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 20px;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+#overlayDescription h2{
+
+  text-align: center;
+}
+#overlayDescription p{
+  text-align: justify;
+}
+
+#overlayDescription img{
+    padding: 25px 25px 25px 25px;
+    float: left;
+}
+/*----------------------------------*/
+
+/* Login */
+.card{
+	height: 300px;
+	margin-top: 100px;
+	margin-bottom: auto;
+	width: 400px;
+}
+
+.warning{
+	color: red;
+}
+/*----------------------------------*/
+
+
+
+
+/* Reservation */
+.Canvas{
+    display: block;
+    margin: auto;
+
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+    z-index: 1;
+}
+
+.PickSeats{
+    font-weight: bold;
+    font-size: 30pt;
+    color: white;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+#reserveButton{
+    float: right;
+    z-index: 100;
+}
+/*----------------------------------*/
+
+

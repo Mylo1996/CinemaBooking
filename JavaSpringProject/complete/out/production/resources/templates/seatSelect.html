@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="margin: 0px;">
+    <title>Cinema</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/reset.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <header th:insert="userHeader.html :: header"> </header>
+</head>
+<body style="background-color: #111111">
+<div id="overlay" class="overlay" onclick="off()"></div>
+<h1 class="PickSeats">Kérem válasszon ülőhelyeket!</h1>
+
+<table id="reserveTable" style="width: auto; margin: auto;">
+    <tr><td><canvas id="myCanvas" width="1200" height="800" class="Canvas"></canvas></td></tr>
+    <tr><td><button id="reserveButton" onclick="checkHighlight()">Tovább</button></td></tr>
+</table>
+
+
+<script th:inline="javascript">
+
+    function on() {
+        document.getElementById("overlay").style.display = "block";
+        checkHighlight();
+    }
+
+    function off() {
+        document.getElementById("overlay").style.display = "none";
+    }
+
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+
+    var room = new Image();
+    var seatLeft = new Image();
+    var seatRight = new Image();
+    var seatMiddle = new Image();
+    var seatHighlight = new Image();
+    var seatMan1 = new Image();
+    var seatMan2 = new Image();
+    var seatWoman1 = new Image();
+    var seatWoman2 = new Image();
+    room.src = '/images/Room.png';
+    seatLeft.src = '/images/SeatArmLeft.png';
+    seatRight.src = '/images/SeatArmRight.png';
+    seatMiddle.src = '/images/SeatMiddle.png';
+    seatHighlight.src = '/images/SeatHighlight.png';
+    seatMan1.src = '/images/SeatMan1.png';
+    seatMan2.src = '/images/SeatMan2.png';
+    seatWoman1.src = '/images/SeatWoman1.png';
+    seatWoman2.src = '/images/SeatWoman2.png';
+    seats = [];
+
+    var colNum = /*[[${room.colCount}]]*/ 20;
+    var rowNum =  /*[[${room.rowCount}]]*/ 10;
+    var startLeft = (c.width - c.width * 0.85) / 2;
+    var startTop = c.height * 0.2;
+    var scale = 0.0;
+
+    var inputSeats = /*[[${room.seats}]]*/ [];
+    var screeningId = /*[[${screeningId}]]*/ '';
+
+
+
+    window.onload = function() {
+        
+        ctx.drawImage(room, 0, 0, c.width, c.height);
+
+        if ((c.width * 0.85) / (seatLeft.width + seatMiddle.width * colNum + seatRight.width) < (c.height * 0.73) / (seatLeft.height * rowNum)) {
+            scale = (c.width * 0.85) / (seatLeft.width + seatMiddle.width * colNum + seatRight.width);
+        } else {
+            scale = (c.height * 0.73) / (seatLeft.height * rowNum);
+        }
+
+        for (j = 0; j < rowNum; j++) {
+            seats.push({
+                top: startTop + j * (seatLeft.height * scale),
+                left: startLeft,
+                width: seatLeft.width * scale,
+                height: seatLeft.height * scale,
+                col: 1,
+                row: j + 1,
+                type: "armrest",
+                highlight: false,
+                reserved: false,
+                skin: 4
+            });
+
+
+
+            for (i = 0; i < colNum; i++) {
+                var random = Math.floor(Math.random() * 4);
+                var idx = (j*colNum)+i;
+                var reserved =  !inputSeats[idx].free;
+                console.log(inputSeats[idx]);
+                if (reserved) {
+                    seats.push({
+                        top: startTop + j * (seatLeft.height * scale),
+                        left: startLeft + seatLeft.width * scale + i * seatMiddle.width * scale,
+                        width: seatMiddle.width * scale,
+                        height: seatMiddle.height * scale,
+                        col: i + 1,
+                        row: j + 1,
+                        type: "seat",
+                        highlight: false,
+                        reserved: true,
+                        skin: random
+                    });
+                } else {
+                    seats.push({
+                        top: startTop + j * (seatLeft.height * scale),
+                        left: startLeft + seatLeft.width * scale + i * seatMiddle.width * scale,
+                        width: seatMiddle.width * scale,
+                        height: seatMiddle.height * scale,
+                        col: i + 1,
+                        row: j + 1,
+                        type: "seat",
+                        highlight: false,
+                        reserved: false,
+                        skin: 4
+                    });
+                }
+            }
+            seats.push({
+                top: startTop + j * (seatLeft.height * scale),
+                left: startLeft + seatLeft.width * scale + colNum * seatMiddle.width * scale,
+                width: seatRight.width * scale,
+                height: seatRight.height * scale,
+                col: colNum,
+                row: j + 1,
+                type: "armrest",
+                highlight: false,
+                reserved: false,
+                skin: 4
+            });
+
+        }
+
+        drawRoom();
+        c.addEventListener('click', Listener,  false);
+    }
+
+    function drawRoom() {
+        ctx.drawImage(room, 0, 0, c.width, c.height);
+
+        seats.forEach(function (seat) {
+            if (seat.col == 1 && seat.type == "armrest") {
+                ctx.drawImage(seatLeft, seat.left, seat.top, seat.width, seat.height);
+            } else if (seat.col == colNum && seat.type == "armrest") {
+                ctx.drawImage(seatRight, seat.left, seat.top, seat.width, seat.height);
+            } else {
+                if (seat.highlight == false && seat.reserved == false) {
+                    ctx.drawImage(seatMiddle, seat.left, seat.top, seat.width, seat.height);
+                } else if (seat.highlight == true) {
+                    ctx.drawImage(seatHighlight, seat.left, seat.top, seat.width, seat.height);
+                } else {
+                    switch (seat.skin) {
+                        case 0:
+                            ctx.drawImage(seatMan1, seat.left, seat.top, seat.width, seat.height);
+                            break;
+                        case 1:
+                            ctx.drawImage(seatMan2, seat.left, seat.top, seat.width, seat.height);
+                            break;
+                        case 2:
+                            ctx.drawImage(seatWoman1, seat.left, seat.top, seat.width, seat.height);
+                            break;
+                        case 3:
+                            ctx.drawImage(seatWoman2, seat.left, seat.top, seat.width, seat.height);
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    function Listener(event) {
+        var x = event.pageX - document.getElementById("reserveTable").offsetLeft,
+            y = event.pageY - document.getElementById("reserveTable").offsetTop;
+
+        seats.forEach(function (seat) {
+            if (seat.reserved == false && y > seat.top && y < seat.top + seat.height && x > seat.left && x < seat.left + seat.width) {
+                //alert('Clicked seat row: ' + seat.row + ' col: ' + seat.col);
+                if (seat.highlight == false) {
+                    seat.highlight = true;
+
+                } else {
+                    seat.highlight = false;
+                }
+                drawRoom();
+            }
+        });
+    }
+
+    function checkHighlight(){
+        var urlParameters = '';
+        for (let i = 0; i < seats.length; i++){
+            if (seats[i].highlight){
+                console.log("Col" + (seats[i].col) + " Row: "+(seats[i].row) + " Number: " +((seats[i].row-1)*colNum+seats[i].col ));
+                urlParameters += (seats[i].row-1)*colNum+seats[i].col +";";
+            }
+        }
+        urlParameters = urlParameters.slice(0, -1);
+		if (urlParameters == ''){
+			alert("Foglalj le legalább egy széket!")
+		}else{
+			window.location.href = '/reservation?reservedSeats=' + urlParameters+'&screeningId=' + screeningId;
+		}
+    }
+
+
+</script>
+</body>
+</html>

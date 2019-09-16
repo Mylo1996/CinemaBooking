@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Foglalások</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<header th:insert="adminHeader.html :: header"> </header>
+	<h1>Foglalások</h1>	
+	<p th:if="${#lists.isEmpty(reservations)}">Nincs egy foglalás sem :(</p>
+	<table th:if="${not #lists.isEmpty(reservations)}" class="table table-striped">
+		<thead>
+			<tr>
+				<td>Vezetéknév</td>
+				<td>Keresztnév</td>
+				<td>E-mail cím</td>
+				<td>Fizetési mód</td>
+				<td>Ár</td>
+				<td>Fizetve</td>
+				<td>Lezárás</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="reservation : ${reservations}">
+				<td th:text="${reservation.firstname}"></td>
+				<td th:text="${reservation.lastname}"></td>
+				<td th:text="${reservation.email}"></td>
+				<div th:switch="${reservation.paymentType}">
+					<td th:case="2">Bankkártya</td>
+					<td th:case="*">Készpénz</td>
+				</div>
+				<td th:text="${reservation.cost}"></td>
+				<td th:if="${reservation.paid}">Fizetve</td>
+				<td th:unless="${reservation.paid}">Függőben</td>
+				<td><a href="#" th:href="@{/closeReservation/} + ${reservation.id}">Lezár</a></td>
+				
+				<!-- <td><a href="#" th:href="@{/deleteReservation/} + ${reservation.id}">Töröl</a></td>  -->
+				<!-- <td><input type="button" value="X" th:onclick="'javascript:deleteRoom(\'' + ${room.id} + '\');'" /></td> -->
+			</tr>
+		</tbody>	
+	</table>
+	
+
+
+
+</body>
+</html>

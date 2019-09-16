@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="margin: 0px;">
+    <title>Cinema</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/timetable.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <img src="/images/Header_logo3.png" alt="Header picture" class="headerimg">
+</head>
+<body>
+<header th:insert="userHeader.html :: header"> </header>
+<div id="poster">
+    <img th:each="movie: ${movies}" th:attr="src=${movie.posterLink}" th:data-id="${movie.id}" onclick="displayOverlay(this.getAttribute('data-id'))" style="margin: 5px;"/>
+</div>
+
+<div th:each="movie: ${movies}" class="overlay" th:id="${movie.id}" th:data-id="${movie.id}" onclick="hideOverlay(this.getAttribute('data-id'))" align="center" >
+    <div id="overlayDescription">
+
+        <table>
+            <tr>
+                <td rowspan="3"><img th:attr="src=${movie.posterLink}" height="300" width="200"/></td>
+                <td><h2 th:text="${movie.title}" /></td>
+            </tr>
+            <tr>
+                <td><p th:text="${movie.description}" /></td>
+            </tr>
+            <tr>
+                <td><h2 th:text="'Időtartam: ' + ${movie.durationInMinutes} + ' perc'" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><div class="cd-schedule loading">
+
+                    <div class="timeline" align="left">
+                        <ul>
+
+                            <li><span>09:00</span></li>
+                            <li><span>10:00</span></li>
+                            <li><span>11:00</span></li>
+                            <li><span>12:00</span></li>
+                            <li><span>13:00</span></li>
+                            <li><span>14:00</span></li>
+                            <li><span>15:00</span></li>
+                            <li><span>16:00</span></li>
+                            <li><span>17:00</span></li>
+                            <li><span>18:00</span></li>
+                            <li><span>19:00</span></li>
+                            <li><span>20:00</span></li>
+                            <li><span>21:00</span></li>
+                            <li><span>22:00</span></li>
+                            <li><span>23:00</span></li>
+                        </ul>
+                    </div> <!-- .timeline -->
+                    <div class="events">
+                        <ul>
+                            <li class="events-group">
+                                <div class="top-info"><span>H</span></div>
+                                <ul>
+                                    <div th:each="screening: ${monday}" th:switch="${movie.Id}">
+										<li th:case="${screening.movieId}" class="single-event" th:data-start="${screening.startTime}" th:data-end="${screening.endTime}" data-event="event-1">
+											<a th:href="@{/screening?movieId=} + ${screening.movieId}+@{&screeningId=} + ${screening.id}+@{&roomNumber=} + ${screening.roomNumber}+@{&is3D=} + ${screening.is3D}+@{&startTime=} + ${screening.startTime}+@{&startDay=} + ${screening.startDay}">
+                                                <em th:if="${screening.is3D} == true" class="event-name" th:text="'3D '"/>
+                                                <em th:if="${screening.is3D} == false" class="event-name" th:text="'2D '"/>
+                                                <em class="event-info" th:text="${screening.startTime} + ' - ' +${screening.endTime}"/>
+
+											</a>
+										</li>
+                                    </div>
+                                </ul>
+                            </li>
+
+                            <li class="events-group">
+                                <div class="top-info"><span>K</span></div>
+                                <ul>
+                                    <div th:each="screening: ${tuesday}" th:switch="${movie.Id}">
+                                        <li th:case="${screening.movieId}" class="single-event" th:data-start="${screening.startTime}" th:data-end="${screening.endTime}" data-event="event-1">
+                                            <a th:href="@{/screening?movieId=} + ${screening.movieId}+@{&screeningId=} + ${screening.id}+@{&roomNumber=} + ${screening.roomNumber}+@{&is3D=} + ${screening.is3D}+@{&startTime=} + ${screening.startTime}+@{&startDay=} + ${screening.startDay}">
+                                                <em th:if="${screening.is3D} == true" class="event-name" th:text="'3D '"/>
+                                                <em th:if="${screening.is3D} == false" class="event-name" th:text="'2D '"/>
+                                                <em class="event-info" th:text="${screening.startTime} + ' - ' +${screening.endTime}"/>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+
+                            <li class="events-group">
+                                <div class="top-info"><span>Sze</span></div>
+                                <ul>
+                                    <div th:each="screening: ${wednesday}" th:switch="${movie.Id}">
+                                        <li th:case="${screening.movieId}" class="single-event" th:data-start="${screening.startTime}" th:data-end="${screening.endTime}" data-event="event-1">
+                                            <a th:href="@{/screening?movieId=} + ${screening.movieId}+@{&screeningId=} + ${screening.id}+@{&roomNumber=} + ${screening.roomNumber}+@{&is3D=} + ${screening.is3D}+@{&startTime=} + ${screening.startTime}+@{&startDay=} + ${screening.startDay}">
+                                                <em th:if="${screening.is3D} == true" class="event-name" th:text="'3D '"/>
+                                                <em th:if="${screening.is3D} == false" class="event-name" th:text="'2D '"/>
+                                                <em class="event-info" th:text="${screening.startTime} + ' - ' +${screening.endTime}"/>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+
+                            <li class="events-group">
+                                <div class="top-info"><span>Cs</span></div>
+                                <ul>
+                                    <div th:each="screening: ${thursday}" th:switch="${movie.Id}">
+                                        <li th:case="${screening.movieId}" class="single-event" th:data-start="${screening.startTime}" th:data-end="${screening.endTime}" data-event="event-1">
+                                            <a th:href="@{/screening?movieId=} + ${screening.movieId}+@{&screeningId=} + ${screening.id}+@{&roomNumber=} + ${screening.roomNumber}+@{&is3D=} + ${screening.is3D}+@{&startTime=} + ${screening.startTime}+@{&startDay=} + ${screening.startDay}">
+                                                <em th:if="${screening.is3D} == true" class="event-name" th:text="'3D '"/>
+                                                <em th:if="${screening.is3D} == false" class="event-name" th:text="'2D '"/>
+                                                <em class="event-info" th:text="${screening.startTime} + ' - ' +${screening.endTime}"/>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+
+                            <li class="events-group">
+                                <div class="top-info"><span>P</span></div>
+                                <ul>
+                                    <div th:each="screening: ${friday}" th:switch="${movie.Id}">
+                                        <li th:case="${screening.movieId}" class="single-event" th:data-start="${screening.startTime}" th:data-end="${screening.endTime}" data-event="event-1">
+                                            <a th:href="@{/screening?movieId=} + ${screening.movieId}+@{&screeningId=} + ${screening.id}+@{&roomNumber=} + ${screening.roomNumber}+@{&is3D=} + ${screening.is3D}+@{&startTime=} + ${screening.startTime}+@{&startDay=} + ${screening.startDay}">
+                                                <em th:if="${screening.is3D} == true" class="event-name" th:text="'3D '"/>
+                                                <em th:if="${screening.is3D} == false" class="event-name" th:text="'2D '"/>
+                                                <em class="event-info" th:text="${screening.startTime} + ' - ' +${screening.endTime}"/>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+
+                            <li class="events-group">
+                                <div class="top-info"><span>Szo</span></div>
+                                <ul>
+                                    <div th:each="screening: ${saturday}" th:switch="${movie.Id}">
+                                        <li th:case="${screening.movieId}" class="single-event" th:data-start="${screening.startTime}" th:data-end="${screening.endTime}" data-event="event-1">
+                                            <a th:href="@{/screening?movieId=} + ${screening.movieId}+@{&screeningId=} + ${screening.id}+@{&roomNumber=} + ${screening.roomNumber}+@{&is3D=} + ${screening.is3D}+@{&startTime=} + ${screening.startTime}+@{&startDay=} + ${screening.startDay}">
+                                                <em th:if="${screening.is3D} == true" class="event-name" th:text="'3D '"/>
+                                                <em th:if="${screening.is3D} == false" class="event-name" th:text="'2D '"/>
+                                                <em class="event-info" th:text="${screening.startTime} + ' - ' +${screening.endTime}"/>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+
+                            <li class="events-group">
+                                <div class="top-info"><span>V</span></div>
+                                <ul>
+                                    <div th:each="screening: ${sunday}" th:switch="${movie.Id}">
+                                        <li th:case="${screening.movieId}" class="single-event" th:data-start="${screening.startTime}" th:data-end="${screening.endTime}" data-event="event-1">
+                                            <a th:href="@{/screening?movieId=} + ${screening.movieId}+@{&screeningId=} + ${screening.id}+@{&roomNumber=} + ${screening.roomNumber}+@{&is3D=} + ${screening.is3D}+@{&startTime=} + ${screening.startTime}+@{&startDay=} + ${screening.startDay}">
+                                                <em th:if="${screening.is3D} == true" class="event-name" th:text="'3D '"/>
+                                                <em th:if="${screening.is3D} == false" class="event-name" th:text="'2D '"/>
+                                                <em class="event-info" th:text="${screening.startTime} + ' - ' +${screening.endTime}"/>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="event-modal">
+                        <header class="header">
+                            <div class="content">
+                                <h4 class="event-name"></h4>
+                            </div>
+                        </header>
+                        <div class="body">
+                            <div class="event-info"></div>
+                        </div>
+
+
+                    </div>
+                </div></td>
+            </tr>
+        </table>
+
+
+
+
+
+        <script type="text/javascript" th:src="@{js/modernizr.js}" ></script>
+        <script type="text/javascript" th:src="@{//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js}"></script>
+        <script>
+        if( !window.jQuery ) document.write('<script type="text/javascript" th:src="js/jquery-3.0.0.min.js"><\/script>');
+    </script>
+        <script type="text/javascript" th:src="@{js/main.js}"></script> <!-- Resource jQuery -->
+    </div>
+
+
+
+
+
+</div>
+
+<script>
+    function displayOverlay(id) {
+      document.getElementById(id).style.display = "block";
+    }
+
+    function hideOverlay(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+</script>
+
+<!-- <button onclick="location.href='addMovie'" type="button">Add new movie</button> -->
+
+</body>
+</html>

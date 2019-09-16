@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Foglalás véglegesítése</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<header th:insert="adminHeader.html :: header"> </header>
+<h2>Foglalás véglegesítése</h2>
+<form th:action="@{/}" th:object="${reservation}" method="POST">
+    <input type="hidden" required th:field="*{id}"/>
+    <label>Vezetéknév:<span class="required">*</span></label>
+    <input type="text" required th:field="*{firstname}"/>
+    <br>
+    <label>Keresztnév:<span class="required">*</span></label>
+    <input type="text" required th:field="*{lastname}"  />
+    <br>
+    <label>E-mail cím:<span class="required">*</span></label>
+    <input type="text" required th:field="*{email}" />
+    <br>
+    <label>Telefonszám:<span class="required">*</span></label>
+    <input type="text" required th:field="*{phoneNumber}" />
+    <br>
+    <label>Menük száma:</label>
+    <input type="number" required th:field="*{menuNumber}" />
+    <br>
+    <label>Fizetési mód:<span class="required">*</span></label>
+	<select th:field="*{paymentType}">
+		<option th:value="1">Készpénz</option>
+		<option th:value="2">Bankkártya</option>
+	</select>
+    <!-- <input type="number" required th:field="*{paymentType}" /> -->
+    <br>
+    <input type="submit" value="Foglalás" />
+</form>
+
+<script>
+
+</script>
+
+</body>
+</html>

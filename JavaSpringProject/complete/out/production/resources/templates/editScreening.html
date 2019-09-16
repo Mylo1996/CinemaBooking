@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vetítés módosítása</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<header th:insert="adminHeader.html :: header"> </header>
+    <h2>Vetítés módosítása</h2>
+    <form th:action="@{/addScreening}" th:object="${screeningToEdit}" method="POST">
+		<input type="hidden" th:field="*{id}" />
+        <label>Filmcím:<span class="required">*</span></label>
+        <input type="text" required th:field="*{rowCount}" />
+        <br>
+        <label>Oszlop:<span class="required">*</span></label>
+        <input type="number" required th:field="*{colCount}" />	
+        <br>
+        <label>Sorszám:<span class="required">*</span></label>
+        <input type="number" required th:field="*{roomNumber}" />
+        <br>
+        <input type="submit" value="Módosítás" />
+    </form>
+
+
+	
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vetítések módosítása</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<header th:insert="adminHeader.html :: header"> </header>
+    <h2>Új vetítés hozzáadása</h2>
+	<p th:text="${title}"></p>
+    <form th:action="@{/addScreening}" th:object="${newScreening}" method="POST">
+		<label>Filmcím:<span class="required">*</span></label>
+		<select th:field="*{movieTitle}">
+			<option th:each="entry : ${#lists.toList(titleSet)}" th:value="${entry}" th:utext="${entry}"></option>
+		</select>	
+        <!-- <input type="text" required th:field="*{movieId}" /> -->
+        <br>
+        <label>Terem száma:<span class="required">*</span></label>
+        <input type="number" required th:field="*{roomNumber}" />
+        <br>
+		<label>3D:</label>
+        <input type="checkbox" value="3D" th:field="*{is3D}" />
+        <br>
+		<label>Kezdési idő:<span class="required">*</span></label>
+		<input type="text" required th:field="*{startTime}" />
+		<br>	
+		<label>Vetítés napja:<span class="required">*</span></label>
+		<select th:field="*{startDay}">
+			<option th:value="Monday">Hétfő</option>
+			<option th:value="Tuesday">Kedd</option>
+			<option th:value="Wednesday">Szerda</option>
+			<option th:value="Thursday">Csütörtök</option>
+			<option th:value="Friday">Péntek</option>
+			<option th:value="Saturday">Szombat</option>
+			<option th:value="Sunday">Vasárnap</option>
+		</select>
+		<!-- <input type="text" required th:field="*{startDay}" /> -->
+		<br>
+        <input type="submit" value="Hozzáadás" />
+    </form>
+
+	<h2>Vetítések:</h2> 	
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<td>Filmcím</td>
+				<td>Terem száma</td>
+				<td>3D</td>
+				<td>Kezdés</td>
+				<td>Befejezés</td>
+				<td>Vetítés napja</td>
+				<td>Szerkesztés</td>
+				<td>Törlés</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="screening : ${screenings}">
+				<td th:text="${screening.movieTitle}"></td>
+				<td th:text="${screening.roomNumber}"></td>
+				<div th:switch="${screening.is3D}">
+					<td th:case="true">3D</td>
+					<td th:case="false">2D</td>
+				</div>
+				<!-- <td th:text="${screening.is3D}"></td> -->
+				<td th:text="${screening.startTime}"></td>
+				<td th:text="${screening.endTime}"></td>
+				<div th:switch="${screening.startDay}">
+					<td th:case="'Monday'">Hétfő</td>
+					<td th:case="'Tuesday'">Kedd</td>
+					<td th:case="'Wednesday'">Szerda</td>
+					<td th:case="'Thursday'">Csütörtök</td>
+					<td th:case="'Friday'">Péntek</td>
+					<td th:case="'Saturday'">Szombat</td>
+					<td th:case="'Sunday'">Vasárnap</td>
+				</div>
+				<!-- <td th:text="${screening.startDay}"></td> -->
+				<td><a href="#" th:href="@{/editScreening/} + ${screening.id}">Szerkeszt</a></td>
+				<td><a href="#" th:href="@{/deleteScreening/} + ${screening.id}">Töröl</a></td> 
+			</tr>
+		</tbody>	
+	</table>	
+</body>
+</html>
